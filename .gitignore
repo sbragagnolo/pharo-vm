@@ -3,3 +3,4 @@
 *.image
 *.sources
 *.changes
+build/*
