@@ -386,6 +386,58 @@ sqInt ioProcessEvents(void);
 #define EventTypeWindow		5
 #define	EventTypeComplex	6
 
+
+
+/**ANDROID PLATFORM */
+
+
+/* Android events */
+
+
+#define	EventTypeOnTrackBall	 7
+#define	EventTypeOnTouch	 8
+#define	EventTypeOnFocusChanged 9
+
+#define EventPause 10
+#define EventResume 11
+
+
+
+/*
+
+
+Since we have much information to transfer, but not much space, because of compatibility
+
+a descriptor is a 32 bits based encoding
+
+[0-2]PointerID [3-7]ActionID [8-19]X [20-31]Y
+
+This allow us to representate:
+up to 8 different pointers (fingers touching at the same time the screen) 
+up to 32 different type of actions
+up to (4096x4096) pixels (X,Y)
+
+Since the event struct allow us to use up to 4 int fields, we can send up to 4 
+
+*/
+
+
+typedef struct sqMotionEvent
+{
+  int type;			/* type of event; either one of EventTypeXXX */
+  unsigned int timeStamp;	/* time stamp */
+  /* the interpretation of the following fields depend on the type of the event */
+  int descriptor1;
+  int descriptor2;
+  int descriptor3;
+  int descriptor4;
+  int descriptor5;
+  int windowIndex;		/* SmallInteger used in image to identify a host window structure */
+} sqMotionEvent;
+
+
+
+
 /* Keypress state for keyboard events. */
 #define EventKeyChar	0
 #define EventKeyDown	1

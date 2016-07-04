@@ -187,6 +187,71 @@ static void recordMouseEvent(void)
 }
 
 
+
+
+
+/**ANDROID PLATFORM */
+
+/***ANDROID TOUCH EVENT***/
+#define allocateOnTouchEvent() ( \
+  (sqMotionEvent *)allocateInputEvent(EventTypeOnTouch) \
+)
+
+/*
+ *******************************************************************************
+ static int makeTouchDescriptorFrom (int x, int y, int pointerID, int action) ;
+ *******************************************************************************
+
+
+ a descriptor is a 32 bits based encoding for the information we can wind in
+ an android MoveEvent  (http://developer.android.com/reference/android/view/MotionEvent.html)
+
+
+ [0-2]PointerID [3-7]ActionID [8-19]X [20-31]Y
+
+ This allow us to representate:
+ up to 8 different pointers (fingers touching at the same time the screen)
+ up to 32 different type of actions
+ up to (4096x4096) pixels (X,Y)
+
+ Since the event struct allow us to use up to 4 int fields, we can send up to 4
+
+ ********************************************************************************/
+
+static int makeTouchDescriptorFrom(int x, int y, int pointerID, int action) {
+// Checking that the data has the proper size	
+	unsigned int pointerMask = 7;
+	unsigned int actionMask = 31 << 3;
+	unsigned int xMask = 4095 << 5 + 3;
+	unsigned int yMask = 4095 << 12 + 5 + 3;
+	if (!(x < 4095 && y < 4096 && pointerID < 8 && action < 32)) {
+		return 0;
+	}
+	return pointerID | actionMask & (action << 3) | xMask & (x << 5 + 3)
+			| yMask & (y << 12 + 5 + 3);
+}
+
+/***ANDROID TOUCH EVENT***/
+static void recordTouchEvent(int descriptor1, int descriptor2, int descriptor3,
+		int descriptor4) {
+	sqMotionEvent *evt = allocateOnTouchEvent();
+	warn("EVENT ALLOCATED \n");
+	evt->descriptor1 = descriptor1;
+	evt->descriptor2 = descriptor2;
+	evt->descriptor3 = descriptor3;
+	evt->descriptor4 = descriptor4;
+	evt->descriptor5 = 0;
+	evt->windowIndex = 0;
+	signalInputEvent();
+#if DEBUG_TOUCH_EVENTS
+	printf("EVENT: touch! ");
+	printf("\n");
+#endif
+}
+
+/*******************************************************************************/
+
+
 static void recordKeyboardEvent(int keyCode, int pressCode, int modifiers, int ucs4)
 {
   sqKeyboardEvent *evt= allocateKeyboardEvent();

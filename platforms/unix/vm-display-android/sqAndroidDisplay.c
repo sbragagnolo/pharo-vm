@@ -54,6 +54,30 @@ int Java_org_smalltalk_stack_StackVM_sendTouchEvent(JNIEnv *env, jobject self, i
 	return runVM();
 }
 
+
+/****************************************************************************/
+/* C method used by android for enter (Events) MotionEvent                  */  
+/*  This event replaces the MouveEvent.                                     */ 
+/****************************************************************************/
+
+
+int Java_org_smalltalk_stack_StackVM_recordTouchEvent (JNIEnv *env, jobject self, int descriptor1,  int descriptor2,  int descriptor3,  int descriptor4  ){
+	recordTouchEvent ( (unsigned int) descriptor1,  (unsigned int) descriptor2,  (unsigned int) descriptor3,  (unsigned int) descriptor4  );
+	//warn("RECORDING TOUCH EVENT %d:%d:%d:%d \n", descriptor1,descriptor2,descriptor3,descriptor4 );
+	return runVM();
+}
+
+/****************************************************************************/
+/* C method used to encode information into a descriptor.  ******************/
+/****************************************************************************/
+int Java_org_smalltalk_stack_StackVM_makeTouchDescriptorFrom (JNIEnv *env, jobject self, int x,  int y,  int pointerID,  int action){
+	int descriptor;
+	descriptor = makeTouchDescriptorFrom (x, y, pointerID, action);
+	//warn("MAKINGUP DESCRIPTOR X:%d Y:%d PID:%d AID:%d \n", x, y, pointerID, action);
+	return descriptor;
+}
+
+
 /****************************************************************************/
 /* C method used by android for enter standard run                          */   
 /****************************************************************************/
