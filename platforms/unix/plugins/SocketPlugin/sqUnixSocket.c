@@ -85,7 +85,6 @@
 # include <netinet/tcp.h>
 # include <arpa/inet.h>
 # include <netdb.h>
-#include <ifaddrs.h>
 # include <errno.h>
 # include <unistd.h>
   

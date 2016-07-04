@@ -200,7 +200,9 @@ void initialiseCopyBits(void)
 {
 	addGenericFastPaths();
 #ifdef __arm__
+#ifndef ANDROID
 	addArmFastPaths();
+#endif
 #endif
 
 }
