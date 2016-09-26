@@ -292,7 +292,7 @@ static void *tryLoadingLinked(char *pluginName)
   DPRINTF((stderr, __FILE__ " %d tryLoadingLinked dlopen(%s) = %p\n", __LINE__, pluginName, handle));
 # if DEBUG
   if(handle != 0) 
-	printf("%s: loaded plugin `%s'\n", exeName, libName);
+	printf("%s: loaded plugin `%s'\n", exeName, pluginName);
 # endif
   return handle;
 }

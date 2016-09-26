@@ -2,8 +2,8 @@ building
 generateBuildScript
 	config write: '
 	#/bin/sh
-export NDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-ndk-r10d/
-export SDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-sdk-linux/
+export NDK=$ANDROID_NDK
+export SDK=$ANDROID_SDK
 export NDK_PROJECT_PATH=', self buildDir pathString, '
 export ROOTSOURCE=$NDK_PROJECT_PATH
 export PATH=$PATH:$SDK/tools:$NDK
@@ -17,8 +17,8 @@ ndk-build NDK_DEBUG=0'
 	
 	config write: '
 		#/bin/sh
-export NDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-ndk-r10d/
-export SDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-sdk-linux/
+export NDK=$ANDROID_NDK
+export SDK=$ANDROID_SDK
 export NDK_PROJECT_PATH=', self buildDir pathString, '
 export ROOTSOURCE=$NDK_PROJECT_PATH
 export PATH=$PATH:$SDK/tools:$NDK	
@@ -29,8 +29,8 @@ ant clean debug -verbose
 	
 .config write: '
 	#/bin/sh
-export NDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-ndk-r10d/
-export SDK=/home/santiago/git-repositories/Pharo-Android-Tools/android-sdk-linux/
+export NDK=$ANDROID_NDK
+export SDK=$ANDROID_SDK
 export NDK_PROJECT_PATH=', self buildDir pathString, '
 export ROOTSOURCE=$NDK_PROJECT_PATH
 export PATH=$PATH:$SDK/tools:$NDK

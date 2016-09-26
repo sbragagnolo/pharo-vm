@@ -5,6 +5,8 @@
 		"abi" : "jeanbaptistearnaud 11/4/2014 11:55",
 		"androidVersion" : "jeanbaptistearnaud 11/4/2014 14:01",
 		"architecture" : "jb 10/14/2014 14:45",
+		"commonCompilerFlags" : "SantiagoBragagnolo 7/5/2016 14:24",
 		"configH" : "SantiagoBragagnolo 7/4/2016 17:26",
 		"crossSources" : "SantiagoBragagnolo 7/4/2016 15:51",
-		"platformSources" : "SantiagoBragagnolo 7/4/2016 15:57" } }
+		"platformSources" : "SantiagoBragagnolo 7/4/2016 15:57",
+		"prepareVMMaker" : "SantiagoBragagnolo 7/5/2016 14:27" } }

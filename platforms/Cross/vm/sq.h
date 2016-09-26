@@ -23,6 +23,14 @@
 #define false	0
 #define null	0  /* using "null" because nil is predefined in Think C */
 
+
+#ifdef ANDROID
+#include <android/log.h>
+#define perror(X) perror_android(__LINE__, __FILE__ , X)
+#define printf(X,...) printf_android(__LINE__, __FILE__ , X, ##__VA_ARGS__)
+#define print(X) print_android(__LINE__, __FILE__ , X)
+#endif
+
 #if !defined(IMAGE_DIALECT_NAME)
 # if NewspeakVM
 #	define IMAGE_DIALECT_NAME "Newspeak"

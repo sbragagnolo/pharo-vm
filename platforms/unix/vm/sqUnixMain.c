@@ -73,10 +73,14 @@
 #endif
 
 #undef	DEBUG_MODULES
-
 #undef	IMAGE_DUMP				/* define to enable SIGHUP and SIGQUIT handling */
 
+
+#define DEBUG_IMAGE
+#define DEBUG_MODULES
+
 #define IMAGE_NAME_SIZE MAXPATHLEN
+
 
 #define DefaultHeapSize		  20	     	/* megabytes BEYOND actual image size */
 #define DefaultMmapSize		1024     	/* megabytes of virtual memory */
@@ -602,7 +606,7 @@ static void emergencyDump(int quit)
   writeImageFile(dataSize);
 
 #if STACKVM
-  printf("\nMost recent primitives\n");
+  printf("\nMost recent primitives- EMERGENCY DUMP\n");
   dumpPrimTraceLog();
 #endif
   fprintf(stderr, "\n");
@@ -872,10 +876,10 @@ reportStackState(char *msg, char *date, int printAll, ucontext_t *uap)
 	else
 		printf("\nCan't dump Smalltalk stack(s). Not in VM thread\n");
 #if STACKVM
-	printf("\nMost recent primitives\n");
+	printf("\nMost recent primitives- STACK STATE\n");
 	dumpPrimTraceLog();
 # if COGVM
-	printf("\n");
+	printf("COGITTITITITI\n");
 	reportMinimumUnusedHeadroom();
 # endif
 #endif
@@ -957,6 +961,9 @@ block()
 void
 error(char *msg)
 {
+#ifdef ANDROID
+	__android_log_write(ANDROID_LOG_ERROR, "Smalltalk-Error", msg);
+#endif
 	reportStackState(msg,0,0,0);
 	if (blockOnError) block();
 	abort();
@@ -1309,10 +1316,10 @@ static void vm_parseEnvironment(void)
 
   if (documentName)
     strcpy(shortImageName, documentName);
-  else if ((ev= getenv(IMAGE_ENV_NAME)))
+  else if ((ev= getenv("PHARO_IMAGE")))
     strcpy(shortImageName, ev);
   else
-    strcpy(shortImageName, DEFAULT_IMAGE_NAME);
+    strcpy(shortImageName, "Spur32CogVM");
 
   if ((ev= getenv("SQUEAK_MEMORY")))	extraMemory= strtobkm(ev);
   if ((ev= getenv("SQUEAK_MMAP")))	useMmap= strtobkm(ev);
@@ -1596,8 +1603,8 @@ static void vm_printUsageNotes(void)
 #else
 	printf("  If `--memory' is not specified then the heap will grow dynamically.\n");
 #endif
-  printf("  <argument>s are ignored, but are processed by the " IMAGE_DIALECT_NAME " image.\n");
-  printf("  The first <argument> normally names a " IMAGE_DIALECT_NAME " `script' to execute.\n");
+  printf("  <argument>s are ignored, but are processed by the " "Spur32CogVM" " image.\n");
+  printf("  The first <argument> normally names a " "Spur32CogVM" " `script' to execute.\n");
   printf("  Precede <arguments> by `--' to use default image.\n");
 }
 
@@ -1638,7 +1645,7 @@ static void usage(void)
       printf("  --spy                  enable the system spy\n");
     }
   printf("\nNotes:\n");
-  printf("  <imageName> defaults to `" DEFAULT_IMAGE_NAME "'.\n");
+  printf("  <imageName> defaults to `" "Spur32CogVM" "'.\n");
   modulesDo(m)
     m->printUsageNotes();
   printf("\nAvailable drivers:\n");
@@ -1688,7 +1695,7 @@ char *getVersionInfo(int verbose)
 #endif
 
   if (verbose)
-    sprintf(info+strlen(info), IMAGE_DIALECT_NAME " VM version: ");
+    sprintf(info+strlen(info), "Spur32CogVM" " VM version: ");
   sprintf(info+strlen(info), "%s #%d", VM_VERSION, vm_serial);
 #if defined(USE_XSHM)
   sprintf(info+strlen(info), " XShm");
@@ -1776,13 +1783,13 @@ imageNotFound(char *imageName)
 {
   /* image file is not found */
   fprintf(stderr,
-	  "Could not open the " IMAGE_DIALECT_NAME " image file `%s'.\n"
+	  "Could not open the " "Spur32CogVM" " image file `%s'.\n"
 	  "\n"
-	  "There are three ways to open a " IMAGE_DIALECT_NAME " image file.  You can:\n"
+	  "There are three ways to open a " "Spur32CogVM" " image file.  You can:\n"
 	  "  1. Put copies of the default image and changes files in this directory.\n"
 	  "  2. Put the name of the image file on the command line when you\n"
 	  "     run %s (use the `-help' option for more information).\n"
-	  "  3. Set the environment variable " IMAGE_ENV_NAME " to the name of the image\n"
+	  "  3. Set the environment variable " "PHARO_IMAGE" " to the name of the image\n"
 	  "     that you want to use by default.\n"
 	  "\n"
 	  "For more information, type: `man %s' (without the quote characters).\n",
