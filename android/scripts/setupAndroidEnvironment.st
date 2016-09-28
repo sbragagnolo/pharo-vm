@@ -27,13 +27,13 @@
 	" Program "
 	
 	packageVerifierInstaller
-		 	value: #ANDROID_NDK 
+		 	value: #ANDROID_NDK_HOME 
 			value: ndkURL 
 			value: 'android-ndk-r10e' 
 			value: (system messageSend:#wget:andUnzip:).
 			
 	destination := packageVerifierInstaller 
-			value: #ANDROID_SDK 
+			value: #ANDROID_SDK_HOME 
 			value: sdkURL 
 			value: 'android-sdk-linux' 
 			value: (system messageSend:#wget:andUntargz:).

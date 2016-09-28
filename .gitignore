@@ -4,3 +4,4 @@
 *.sources
 *.changes
 src/*
+*~
