@@ -2,7 +2,6 @@ as yet unclassified
 prepareVMMaker
 	| maker |
 	maker := super prepareVMMaker.
-	self halt.
 	maker options: #(
 		ObjectMemory Spur32BitCoMemoryManager
 		FailImbalancedPrimitives false
