@@ -1,0 +1,12 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"abi" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"androidVersion" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"architecture" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"commonCompilerFlags" : "SantiagoBragagnolo 8/31/2016 11:28",
+		"configH" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"crossSources" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"platformSources" : "SantiagoBragagnolo 8/31/2016 11:21",
+		"prepareVMMaker" : "SantiagoBragagnolo 8/31/2016 14:40" } }

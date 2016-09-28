@@ -1,0 +1,14 @@
+{
+	"category" : "CMakeVMMaker-Unix",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "CogSpur32AndroidARMConfig",
+	"pools" : [
+		 ],
+	"super" : "CogSpur32AndroidConfig",
+	"type" : "normal" }
