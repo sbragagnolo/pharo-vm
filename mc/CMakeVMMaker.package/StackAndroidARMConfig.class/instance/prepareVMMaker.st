@@ -5,5 +5,6 @@ prepareVMMaker
 	maker options: #(
 		ObjectMemory Spur32BitMemoryManager
 		FailImbalancedPrimitives false
-		ISA ARM).
+		CogCompilerClass CogInLineLiteralsARMCompiler
+		ISA ARMv5).
 	^ maker
