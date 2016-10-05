@@ -18,7 +18,7 @@ addons:
       - $(git ls-files -o | grep app/build/outputs | tr "\n" ":")
 before_install:
  - wget -O- https://raw.githubusercontent.com/guillep/Scale/master/setupScale.sh | sudo bash
- - ls /usr/bin/pharo
+ - ls /usr/bin
  - /usr/bin/pharo/pharo /usr/bin/scaleImage/Pharo.image eval "2+2"
  - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
  - export ANDROID_NDK_HOME=$HOME/android-ndk-root
