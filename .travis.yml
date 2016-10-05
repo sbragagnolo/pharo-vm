@@ -22,10 +22,10 @@ before_install:
  - ls -lsha 
  - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
  - export ANDROID_NDK_HOME=$HOME/android-ndk-root
- - cd android/scripts; scale newImage.st
- - cd android/scripts; scale linkSources.st
- - cd android/scripts; scale generateAndroidMake.st
- - cd android/scripts; scale newResourceImage.st
+ - cd android/scripts; /usr/bin/scale newImage.st
+ - cd android/scripts; /usr/bin/scale linkSources.st
+ - cd android/scripts; /usr/bin/scale generateAndroidMake.st
+ - cd android/scripts; /usr/bin/scale newResourceImage.st
 
   
 script:
