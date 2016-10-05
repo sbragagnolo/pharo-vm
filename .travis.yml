@@ -22,8 +22,9 @@ before_install:
   - wget -O- https://raw.githubusercontent.com/guillep/Scale/master/setupScale.sh | sudo bash
   - cd android/scripts; scale newImage.st
   - cd android/scripts; scale linkSources.st
-  - cd android/scripts; scale newResourceImage.st
   - cd android/scripts; scale generateAndroidMake.st
+  - cd android/scripts; scale newResourceImage.st
+
   
 script:
   build/build.sh
