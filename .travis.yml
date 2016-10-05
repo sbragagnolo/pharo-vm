@@ -17,9 +17,11 @@ addons:
     paths:
       - $(git ls-files -o | grep app/build/outputs | tr "\n" ":")
 before_install:
-  - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
+ - wget -O- https://raw.githubusercontent.com/guillep/Scale/master/setupScale.sh | sudo bash
+ - pwd
+ - ls -lsha 
+ - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
   - export ANDROID_NDK_HOME=$HOME/android-ndk-root
-  - wget -O- https://raw.githubusercontent.com/guillep/Scale/master/setupScale.sh | sudo bash
   - cd android/scripts; scale newImage.st
   - cd android/scripts; scale linkSources.st
   - cd android/scripts; scale generateAndroidMake.st
