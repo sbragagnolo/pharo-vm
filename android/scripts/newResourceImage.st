@@ -20,4 +20,4 @@ temp ensureCreateDirectory.
 
 image := system loadPharo: 50 into: temp.
 
-system execute: 'Gofer it smalltalkhubUser: ''sbragagnolo'' project: ''Android''; configuration; loadStable.WorldMorph installNewWorld.AndroidInputEventSensor installEventSensorFramework.' into: image andSaveItAt: deploy.
+system execute: 'Gofer it smalltalkhubUser: ''sbragagnolo'' project: ''Android''; configuration; loadStable. WorldMorph installNewWorld. AndroidInputEventSensor installEventSensorFramework.' into: image andSaveItAt: deploy.
