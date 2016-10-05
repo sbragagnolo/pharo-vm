@@ -21,7 +21,7 @@ before_install:
  - pwd
  - ls -lsha 
  - git clone https://github.com/urho3d/android-ndk.git $HOME/android-ndk-root
-  - export ANDROID_NDK_HOME=$HOME/android-ndk-root
+ - export ANDROID_NDK_HOME=$HOME/android-ndk-root
  - cd android/scripts; scale newImage.st
  - cd android/scripts; scale linkSources.st
  - cd android/scripts; scale generateAndroidMake.st
