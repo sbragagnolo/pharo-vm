@@ -13,6 +13,11 @@ android:
 addons:
   apt_packages:
     - pandoc
+    - lib32asound2
+    - lib32z1
+    - lib32bz2-1.0
+    - libssl1.0.0:i386
+    - libfreetype6:i386
   artifacts:
     paths:
       - $(git ls-files -o | grep app/build/outputs | tr "\n" ":")
