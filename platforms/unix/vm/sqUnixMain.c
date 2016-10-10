@@ -163,6 +163,35 @@ sqInt ioProcessEvents(void) {
     return 0;
 }
 
+
+
+
+#ifdef ANDROID
+int printf_android (int line, const char* filename,  const char * fmt, ...) {
+	int ret;
+	va_list args;
+	va_start(args, fmt);
+	//__android_log_print(ANDROID_LOG_ERROR, "*RAMONTalk-Printf", "-Line: %d File: %s ** ", line, filename );
+	ret = __android_log_vprint(ANDROID_LOG_ERROR, "*RAMONTalk-Printf", fmt, args);
+	va_end(args);
+	return ret;
+}
+
+
+void perror_android (int line, const char* filename, const char * string) {
+	//__android_log_print(ANDROID_LOG_ERROR, "*RAMONTalk-PError", "-Line: %d File: %s ** %s ", line, filename, string );
+	__android_log_print(ANDROID_LOG_ERROR, "*RAMONTalk-PError", "%s ", string );
+	 perror(string);
+}
+
+void print_android (int line, const char* filename, const char * string) {
+	__android_log_print(ANDROID_LOG_ERROR, "*RAMONTalk-Print", "%s ", string );
+	//__android_log_print(ANDROID_LOG_ERROR, "*RAMONTalk-Print", "-Line: %d File: %s ** %s ", line, filename, string );
+}
+
+#endif
+
+
 /*
  * In the Cog VMs time management is in platforms/unix/vm/sqUnixHeartbeat.c.
  */
@@ -961,9 +990,9 @@ block()
 void
 error(char *msg)
 {
-#ifdef ANDROID
-	__android_log_write(ANDROID_LOG_ERROR, "Smalltalk-Error", msg);
-#endif
+	#ifdef ANDROID
+		__android_log_write(ANDROID_LOG_ERROR, "Smalltalk-Error", msg);
+	#endif
 	reportStackState(msg,0,0,0);
 	if (blockOnError) block();
 	abort();
