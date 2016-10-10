@@ -27,7 +27,7 @@ initializeFrameIndices
 	The first frame in a stack page is the baseFrame and is marked as such by a null saved fp,
 	in which case the saved method ip is actually the context (possibly hybrid) beneath the base frame"
 
-	| fxCallerSavedIP fxSavedFP fxMethod fxFrameFlags fxThisContext fxReceiver |
+	| fxCallerSavedIP fxSavedFP fxMethod fxFrameFlags fxThisContext fxReceiver fxMFReceiver |
 	fxCallerSavedIP := 1.
 	fxSavedFP := 0.
 	fxMethod := -1.
@@ -55,4 +55,5 @@ initializeFrameIndices
 	FoxIFrameFlags := #undefined.
 	FoxIFSavedIP := #undefined.
 	FoxIFReceiver := #undefined.
-	FoxMFReceiver := #undefined
+			fxMFReceiver := -3.
+	FoxMFReceiver := fxMFReceiver * BytesPerWord.

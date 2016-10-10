@@ -106,8 +106,9 @@ extern unsigned long (*ceGetSP)(); /* provided by Cogit */
 # define STACK_ALIGN_MASK (STACK_ALIGN_BYTES-1)
 #	define assertCStackWellAligned() do {									\
 	extern sqInt cFramePointerInUse;										\
-	if (cFramePointerInUse)													\
+	if (cFramePointerInUse){	printf("CALLING GETFP: %lu ", getfp());												\
 		assert((getfp() & STACK_ALIGN_MASK) == STACK_FP_ALIGNMENT);		\
+		  }\
 	assert((getsp() & STACK_ALIGN_MASK) == 0);	\
 } while (0)
 #else /* defined(STACK_ALIGN_BYTES) */
