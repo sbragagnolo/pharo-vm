@@ -33,7 +33,6 @@ before_install:
  - cd -
   
 script:
- - cd build
- - build.sh
- - package.sh 
+ - cd build; ./build.sh
+ - cd build; ./package.sh 
 
