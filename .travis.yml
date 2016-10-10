@@ -31,9 +31,9 @@ before_install:
  - /usr/bin/scale generateAndroidMake.st
  - /usr/bin/scale newResourceImage.st
  - cd -
- - cd build
   
 script:
+ - cd build
  - build.sh
  - package.sh 
 
