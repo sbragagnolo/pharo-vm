@@ -1,0 +1,16 @@
+{
+	"category" : "VMMaker-Interpreter",
+	"classinstvars" : [
+		 ],
+	"classtraitcomposition" : "TAndroidInterpreter classTrait",
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "CoAndroidEvtInterpreter",
+	"pools" : [
+		 ],
+	"super" : "CoInterpreter",
+	"traitcomposition" : "TAndroidInterpreter",
+	"type" : "normal" }

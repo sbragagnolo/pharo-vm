@@ -1,3 +1,3 @@
 source files
 interpreterClass
-	^ StackEvtInterpreter
+	^ StackAndroidEvtInterpreter 
