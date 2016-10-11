@@ -8,4 +8,5 @@ commonCompilerFlags
 	'-DIMAGE_DIALECT_NAME="Spur32CogVM" '.
 	'-DIMAGE_ENV_NAME="PHARO_IMAGE"' .
 	'-DDEFAULT_IMAGE_NAME="Spur32CogVM.image"' . 
+	'-DCOGVM=1' .
 	'-DPharoVM'}
