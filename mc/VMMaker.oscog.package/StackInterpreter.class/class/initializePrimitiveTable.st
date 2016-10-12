@@ -10,6 +10,7 @@ initializePrimitiveTable
 	PrimNumberFFICall := 120.
 	PrimNumberDoExternalCall := 218.
 	PrimitiveTable := Array new: MaxPrimitiveIndex + 1.
+	self primitivesClass initializeMiscConstants .
 	self primitivesClass table: PrimitiveTable from: 
 	#(	"Integer Primitives (0-19)"
 		(0 0 "a.k.a. primitiveFail but faster because primitiveFail won't even be called")

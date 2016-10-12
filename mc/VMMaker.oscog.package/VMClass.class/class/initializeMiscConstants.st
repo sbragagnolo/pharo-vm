@@ -7,7 +7,7 @@ initializeMiscConstants
 	VMBIGENDIAN class. "Mention this for the benefit of CCodeGenerator>>emitCConstantsOn:"
 	SPURVM := STACKVM := COGVM := COGMTVM := false.
 
-	initializationOptions ifNil: [self initializationOptions: Dictionary new].
+	self initializationOptions ifNil: [self initializationOptions: Dictionary new].
 	omc := initializationOptions at: #ObjectMemory ifAbsent: nil.
 	(omc isNil and: [self defaultObjectMemoryClass notNil]) ifTrue:
 		[omc := initializationOptions at: #ObjectMemory put: self defaultObjectMemoryClass name].

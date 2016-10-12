@@ -11,6 +11,6 @@
 	"name" : "CoAndroidEvtInterpreter",
 	"pools" : [
 		 ],
-	"super" : "CoInterpreter",
+	"super" : "CoInterpreterPrimitives",
 	"traitcomposition" : "TAndroidInterpreter",
 	"type" : "normal" }

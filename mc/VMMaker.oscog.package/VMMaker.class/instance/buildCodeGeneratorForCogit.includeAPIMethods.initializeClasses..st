@@ -4,7 +4,6 @@ buildCodeGeneratorForCogit: cogitClass includeAPIMethods: getAPIMethods initiali
 
 	| cg cogitClasses |
 	cg := self createCogitCodeGenerator.
-
 	cg vmClass: cogitClass.
 	initializeClasses ifTrue:
 		[{ cogitClass. self interpreterClass. self interpreterClass objectMemoryClass } do:
