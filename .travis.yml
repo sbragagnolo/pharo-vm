@@ -40,6 +40,8 @@ before_install:
  - cd ../../
   
 script:
- - cd buildspur; ./build.sh ; ./package.sh 
- - cd build; ./build.sh ; ./package.sh 
-
+ - cd /home/travis/build/sbragagnolo/pharo-vm/buildspur; ./build.sh
+ - cd /home/travis/build/sbragagnolo/pharo-vm/buildspur; ./package.sh 
+ - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./build.sh
+ - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./package.sh 
+ 
