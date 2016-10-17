@@ -31,7 +31,9 @@ before_install:
  - /usr/bin/scale generateAndroidMake.st
  - /usr/bin/scale newResourceImage.st
  - mv build buildspur
+ - cd -
  - mkdir build
+ - cd android/scripts
  - /usr/bin/scale linkSources.st
  - /usr/bin/scale generateStackAndroidMake.st
  - /usr/bin/scale newResourceImage.st 
