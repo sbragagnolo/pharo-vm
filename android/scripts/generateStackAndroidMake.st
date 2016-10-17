@@ -6,6 +6,3 @@
 	generator :=  SCImageBundle new directory: system pwd / #'..' / #'..' / #image .
 	system execute: ' StackAndroidARMConfig new generate; generateSources. ' into: generator.
   system chmod: '+x' to: (system pwd / #'..' / #'..' / #build) fullName, '/*sh '.
-
-
-	
