@@ -28,8 +28,8 @@ Building the  Stack AndroidVM
  ./setupAndroidEnvironment.st
  ```
   This script downloads the content from
-	'http://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'.
-	'http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz'.
+	* 'http://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'.
+	* 'http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz'.
  
   After this process you should have available the environment variables ANDROID_NDK_HOME and ANDROID_SDK_HOME.
   Ensure this by checking your .bashrc file at the user's home directory. 
@@ -97,8 +97,8 @@ DISCLAIMER: This VM is not yet working. But you can still compile it and deploy 
  ./setupAndroidEnvironment.st
  ```
   This script downloads the content from
-	'http://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'.
-	'http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz'.
+	* 'http://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'.
+	* 'http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz'.
  
   After this process you should have available the environment variables ANDROID_NDK_HOME and ANDROID_SDK_HOME.
   Ensure this by checking your .bashrc file at the user's home directory. 
