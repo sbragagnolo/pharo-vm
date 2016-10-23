@@ -26,16 +26,16 @@ before_install:
  - git clone https://github.com/sbragagnolo/android-travis-dependancies.git $HOME/android
  - export ANDROID_NDK_HOME=$HOME/android/android-ndk-r10d
 script:
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale newImage.st
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale linkSources.st
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale generateAndroidMake.st
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale newResourceImage.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale newImage.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale linkSources.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale generateAndroidMake.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale newResourceImage.st
  - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./build.sh
  - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./package.sh 
  - rm /home/travis/build/sbragagnolo/pharo-vm/build/* -rf
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale linkSources.st
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale generateStackAndroidMake.st
- - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/bin/scale newResourceImage.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale linkSources.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale generateStackAndroidMake.st
+ - cd /home/travis/build/sbragagnolo/pharo-vm/android/scripts ; /usr/local/bin/scale newResourceImage.st
  - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./build.sh
  - cd /home/travis/build/sbragagnolo/pharo-vm/build; ./package.sh 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/scale
+#!/usr/local/bin/scale
 
 
 " This script executes the Android Stack generator and then it makes the building files executable "
