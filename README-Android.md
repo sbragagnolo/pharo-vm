@@ -16,7 +16,6 @@ REQUIREMENTS
 Building the  Stack AndroidVM
 ============================
 
-DISCLAIMER: This VM is not yet working. But you can still compilei
 
 1. Download the sources from [github](https://github.com/pharo-project/pharo-vm)
  ```bash
@@ -85,7 +84,7 @@ This script downloads the content from
 Building the  JIT AndroidVM
 ============================
 
-DISCLAIMER: This VM is not yet working. But you can still compilei
+DISCLAIMER: This VM is not yet working. But you can still compile it and deploy it.
 
 1. Download the sources from [github](https://github.com/pharo-project/pharo-vm)
  ```bash
