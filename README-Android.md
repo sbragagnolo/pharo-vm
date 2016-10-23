@@ -18,10 +18,11 @@ Building the  Stack AndroidVM
 
 
 1. Download the sources from [github](https://github.com/sbragagnolo/pharo-vm)
- ```bash
- git clone --depth=1 https://github.com/sbragagnolo/pharo-vm
- cd pharo-vm
- ```
+ 
+  ```bash
+  git clone --depth=1 https://github.com/sbragagnolo/pharo-vm
+  cd pharo-vm
+  ```
 2. Set-up your environment: This script will download the SDK installer and NDK R10
  ```bash
  cd android/scripts
@@ -87,10 +88,11 @@ Building the  JIT AndroidVM
 DISCLAIMER: This VM is not yet working. But you can still compile it and deploy it.
 
 1. Download the sources from [github](https://github.com/pharo-project/pharo-vm)
- ```bash
-  git clone --depth=1 https://github.com/pharo-project/pharo-vm.git
-  cd pharo-vm
- ```
+ 
+  ```bash
+   git clone --depth=1 https://github.com/pharo-project/pharo-vm.git
+   cd pharo-vm
+  ```
 2. Set-up your environment: This script will download the SDK installer and NDK R10
  ```bash
  cd android/scripts
