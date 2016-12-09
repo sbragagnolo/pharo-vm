@@ -3,11 +3,11 @@ defaultExternalPlugins
 	^ #(
 		UUIDPlugin
 		FloatMathPlugin
-		AsynchFilePlugin
 		Mpeg3Plugin
 		CroquetPlugin
 		JoystickTabletPlugin
 		B3DAcceleratorPlugin
+		ClipboardExtendedPlugin
 		JPEGReadWriter2Plugin 
 		JPEGReaderPlugin
 		RePlugin

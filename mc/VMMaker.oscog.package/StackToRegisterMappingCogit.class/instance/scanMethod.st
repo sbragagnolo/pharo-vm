@@ -6,9 +6,12 @@ scanMethod
 		- what are the targets of any backward branches.
 		- how many blocks it creates
 	 Answer the block count or on error a negative error code"
-	| latestContinuation nExts descriptor pc numBlocks distance targetPC framelessStackDelta |
+	| latestContinuation nExts descriptor pc numBlocks distance targetPC framelessStackDelta seenInstVarStore |
 	<var: #descriptor type: #'BytecodeDescriptor *'>
-	needsFrame := false.
+	needsFrame := useTwoPaths := seenInstVarStore := false.
+	LowcodeVM ifTrue: [ hasNativeFrame := false ].
+	self maybeInitNumFixups.
+	self maybeInitNumCounters.
 	prevBCDescriptor := nil.
 	NewspeakVM ifTrue:
 		[numIRCs := 0].
@@ -28,28 +31,47 @@ scanMethod
 		 (descriptor isReturn
 		  and: [pc >= latestContinuation]) ifTrue:
 			[endPC := pc].
-		 needsFrame ifFalse:
+
+		  needsFrame ifFalse:
 			[(descriptor needsFrameFunction isNil
 			  or: [self perform: descriptor needsFrameFunction with: framelessStackDelta])
-				ifTrue: [needsFrame := true]
-				ifFalse: [framelessStackDelta := framelessStackDelta + descriptor stackDelta]].
+					ifTrue:
+						["With immutability we win simply by avoiding a frame build if the receiver is young and not immutable."
+						 self cppIf: IMMUTABILITY
+							ifTrue: [descriptor is1ByteInstVarStore
+									ifTrue: [useTwoPaths := true]
+									ifFalse: [needsFrame := true. useTwoPaths := false]]
+							ifFalse: [needsFrame := true. useTwoPaths := false]]
+					ifFalse:
+						[framelessStackDelta := framelessStackDelta + descriptor stackDelta.
+						 "Without immutability we win if there are two or more stores and the receiver is new."
+						 self cppIf: IMMUTABILITY
+							ifTrue: []
+							ifFalse:
+								[descriptor is1ByteInstVarStore ifTrue:
+									[seenInstVarStore
+										ifTrue: [useTwoPaths := true]
+										ifFalse: [seenInstVarStore := true]]]]].
+
 		 descriptor isBranch ifTrue:
 			[distance := self spanFor: descriptor at: pc exts: nExts in: methodObj.
 			 targetPC := pc + descriptor numBytes + distance.
+			 self maybeCountFixup: descriptor.
 			 (self isBackwardBranch: descriptor at: pc exts: nExts in: methodObj)
 				ifTrue: [self initializeFixupAt: targetPC - initialPC]
-				ifFalse: [latestContinuation := latestContinuation max: targetPC]].
+				ifFalse:
+					[latestContinuation := latestContinuation max: targetPC.
+					 self maybeCountCounter]].
 		 descriptor isBlockCreation ifTrue:
 			[numBlocks := numBlocks + 1.
 			 distance := self spanFor: descriptor at: pc exts: nExts in: methodObj.
 			 targetPC := pc + descriptor numBytes + distance.
-			 latestContinuation := latestContinuation max: targetPC].
+			 latestContinuation := latestContinuation max: targetPC.
+			 self maybeCountFixup: descriptor].
+
 		 NewspeakVM ifTrue:
-			[descriptor hasIRC ifTrue:
-				[numIRCs := numIRCs + 1]].
+			[descriptor hasIRC ifTrue: [numIRCs := numIRCs + 1]].
 		 pc := pc + descriptor numBytes.
-		 descriptor isExtension
-			ifTrue: [nExts := nExts + 1]
-			ifFalse: [nExts := extA := extB := 0].
+		 nExts := descriptor isExtension ifTrue: [nExts + 1] ifFalse: [extA := extB := 0].
 		 prevBCDescriptor := descriptor].
 	^numBlocks

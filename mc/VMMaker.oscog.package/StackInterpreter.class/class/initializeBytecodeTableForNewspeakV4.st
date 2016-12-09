@@ -4,9 +4,9 @@ initializeBytecodeTableForNewspeakV4
 	"Note: This table will be used to generate a C switch statement."
 
 	initializationOptions at: #NewsqueakV4BytecodeSet put: (NewsqueakV4BytecodeSet := true).
-
 	BytecodeTable := Array new: 256.
 	BytecodeEncoderClassName := #EncoderForNewsqueakV4.
+	BytecodeSetHasExtensions := true.
 	LongStoreBytecode := 234.
 	self table: BytecodeTable from:
 	#(	"1 byte bytecodes"
@@ -44,7 +44,7 @@ initializeBytecodeTableForNewspeakV4
 		(101	 bytecodePrimAtEnd)
 		(102	 bytecodePrimIdenticalV4) "for booleanCheatV4:"
 		(103	 bytecodePrimClass)
-		(104	 bytecodePrimSpecialSelector24) "was blockCopy:"
+		(104	 bytecodePrimNotIdenticalV4) "was blockCopy:"
 		(105	 bytecodePrimValue)
 		(106	 bytecodePrimValueWithArg)
 		(107	 bytecodePrimDo)

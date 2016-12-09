@@ -2,7 +2,7 @@
 	"class" : {
 		"declareCVarsIn:" : "ar 11/11/1998 22:01" },
 	"instance" : {
-		"absoluteSquared8Dot24:" : "ar (auto pragmas 12/08) 10/30/1998 20:02",
+		"absoluteSquared8Dot24:" : "nice 11/18/2016 21:57",
 		"adjustWideBezierLeft:width:offset:endX:" : "ar (auto pragmas 12/08) 11/8/1998 15:18",
 		"adjustWideBezierRight:width:offset:endX:" : "ar (auto pragmas 12/08) 11/8/1998 15:18",
 		"adjustWideLine:afterSteppingFrom:to:" : "ar (auto pragmas 12/08) 11/9/1998 15:34",
@@ -160,7 +160,7 @@
 		"stepToFirstLine" : "ar (auto pragmas 12/08) 11/4/1998 21:52",
 		"stepToFirstLineIn:at:" : "ar (auto pragmas 12/08) 11/9/1998 15:38",
 		"stepToFirstWideBezier" : "ar (auto pragmas 12/08) 11/6/1998 02:00",
-		"stepToFirstWideBezierIn:at:" : "ar (auto pragmas 12/08) 11/9/1998 15:38",
+		"stepToFirstWideBezierIn:at:" : "nice 11/18/2016 03:45",
 		"stepToFirstWideLine" : "ar (auto pragmas 12/08) 11/4/1998 21:54",
 		"stepToFirstWideLineIn:at:" : "ar (auto pragmas 12/08) 11/9/1998 15:38",
 		"stepToNextBezier" : "ar (auto pragmas 12/08) 11/6/1998 00:08",

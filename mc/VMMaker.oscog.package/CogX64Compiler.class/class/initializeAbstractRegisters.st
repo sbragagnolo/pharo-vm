@@ -3,29 +3,16 @@ initializeAbstractRegisters
 	"Assign the abstract registers with the identities/indices of the relevant concrete registers."
 	"[1] Figure 3.4 Register Usage in
 		System V Application Binary Interface
-		AMD64 Architecture Processor Supplement
-
-	N.B. RAX RCX & RDX are caller-save (scratch) registers.  Hence we use RCX for class and RDX for
-		receiver/result since these are written in all normal sends."
+		AMD64 Architecture Processor Supplement"
 
 	super initializeAbstractRegisters.
 
-	TempReg				:= RAX.
-	ClassReg				:= RCX.
-	ReceiverResultReg		:= RDX.
-	SendNumArgsReg		:= R9.
-	SPReg					:= RSP.
-	FPReg					:= RBP.
-	Arg0Reg				:= RDI. "So as to agree with C ABI arg 0"
-	Arg1Reg				:= RSI. "So as to agree with C ABI arg 1"
-	VarBaseReg			:= RBX. "Must be callee saved"
-	"R8 is either RISCTempReg or Extra6Reg depending on subclass."
-	Extra0Reg				:= R10.
-	Extra1Reg				:= R11.
-	Extra2Reg				:= R12.
-	Extra3Reg				:= R13.
-	Extra4Reg				:= R14.
-	Extra5Reg				:= R15.
+	"N.B. RAX RCX & RDX are caller-save (scratch) registers.  Hence we use RCX for class and RDX for
+		receiver/result since these are written in all normal sends."
+
+	SysV
+		ifTrue: [self initializeAbstractRegistersSysV]
+		ifFalse: [self initializeAbstractRegistersWin64].
 
 	DPFPReg0				:= XMM0L.
 	DPFPReg1				:= XMM1L.

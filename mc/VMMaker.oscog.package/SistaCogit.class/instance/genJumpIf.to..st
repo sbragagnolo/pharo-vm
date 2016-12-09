@@ -8,30 +8,41 @@ genJumpIf: boolean to: targetBytecodePC
 	 decrements the lower half.  N.B. We *do not* eliminate dead branches (true ifTrue:/true ifFalse:)
 	 so that scanning for send and branch data is simplified and that branch data is correct."
 	<inline: false>
-	| ok counterAddress countTripped retry nextPC nextDescriptor |
+	| ok counterAddress countTripped retry nextPC nextDescriptor desc |
 	<var: #ok type: #'AbstractInstruction *'>
+	<var: #desc type: #'CogSimStackEntry *'>
 	<var: #retry type: #'AbstractInstruction *'>
 	<var: #countTripped type: #'AbstractInstruction *'>
 	<var: #nextDescriptor type: #'BytecodeDescriptor *'>
 
+	"In optimized code we don't generate counters to improve performance"
 	(coInterpreter isOptimizedMethod: methodObj) ifTrue: [ ^ super genJumpIf: boolean to: targetBytecodePC ].
 	
+	"If the branch is reached only for the counter trip trampoline 
+	(typically, var1 == var2 ifTrue: falls through to the branch only for the trampoline)
+	we generate a specific path to drastically reduce the number of machine instructions"
 	branchReachedOnlyForCounterTrip ifTrue: 
 		[ branchReachedOnlyForCounterTrip := false.
 		^ self genCounterTripOnlyJumpIf: boolean to: targetBytecodePC ].
 	
+	"We detect and: / or:, if found, we don't generate the counters to avoid pathological counter slow down"
 	boolean == objectMemory falseObject ifTrue:
-		[ "detection of and: / or:"
-		nextPC := bytecodePC + (self generatorAt: byte0) numBytes.
-		nextDescriptor := self generatorAt: (objectMemory fetchByte: nextPC ofObject: methodObj) + bytecodeSetOffset.
-		nextDescriptor generator ==  #genPushConstantTrueBytecode ifTrue: [ ^ super genJumpIf: boolean to: targetBytecodePC ].
-		nextDescriptor := self generatorAt: (objectMemory fetchByte: targetBytecodePC ofObject: methodObj) + bytecodeSetOffset.
-		nextDescriptor generator ==  #genPushConstantFalseBytecode ifTrue: [ ^ super genJumpIf: boolean to: targetBytecodePC ].  ].
+		[ nextPC := bytecodePC + (self generatorAt: byte0) numBytes.
+		  nextDescriptor := self generatorAt: (objectMemory fetchByte: nextPC ofObject: methodObj) + bytecodeSetOffset.
+		  nextDescriptor generator ==  #genPushConstantTrueBytecode ifTrue: [ ^ super genJumpIf: boolean to: targetBytecodePC ].
+		  nextDescriptor := self generatorAt: (objectMemory fetchByte: targetBytecodePC ofObject: methodObj) + bytecodeSetOffset.
+		  nextDescriptor generator ==  #genPushConstantFalseBytecode ifTrue: [ ^ super genJumpIf: boolean to: targetBytecodePC ].  ].
 
-	extA := 0.
+	extA := 0. "We ignore the noMustBeBoolean flag. It should not be present in methods with counters, and if it is we don't care."
 
+	"We don't generate counters on branches on true/false, the basicblock usage can be inferred"
+	desc := self ssTop.
+	(desc type == SSConstant
+	 and: [desc constant = objectMemory trueObject or: [desc constant = objectMemory falseObject]]) ifTrue:
+		[ ^ super genJumpIf: boolean to: targetBytecodePC ].
+	
 	self ssFlushTo: simStackPtr - 1.
-	self ssTop popToReg: TempReg.
+	desc popToReg: TempReg.
 	self ssPop: 1.
 
 	"We need SendNumArgsReg because of the mustBeBooleanTrampoline"
@@ -61,16 +72,12 @@ genJumpIf: boolean to: targetBytecodePC
 	ok := self JumpZero: 0.
 	self MoveCq: 0 R: SendNumArgsReg. "if counterReg is 0 this is a mustBeBoolean, not a counter trip."
 	
-	countTripped jmpTarget:
-		(self CallRT: (boolean == objectMemory falseObject
-						ifTrue: [ceSendMustBeBooleanAddFalseTrampoline]
-						ifFalse: [ceSendMustBeBooleanAddTrueTrampoline])).
+	countTripped jmpTarget: (self genCallMustBeBooleanFor: boolean).
 						
 	"If we're in an image which hasn't got the Sista code loaded then the ceCounterTripped:
 	 trampoline will return directly to machine code, returning the boolean.  So the code should
 	 jump back to the retry point. The trampoline makes sure that TempReg has been reloaded."
-	self annotateBytecode: self Label.
-
+	self annotateBytecode: self Label. "For some reason if I write self annotateBytecode: (self Jump: retry) the annotation is not at the correct place."
 	self Jump: retry.
 	
 	ok jmpTarget: self Label.

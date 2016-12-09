@@ -19,6 +19,7 @@ genJumpIf: boolean to: targetBytecodePC
 									ifFalse: [self prevInstIsPCAnnotated
 												ifTrue: [self Nop]
 												ifFalse: [self Label]]).
+		 extA := 0.
 		 ^0].
 	desc popToReg: TempReg.
 	"Cunning trick by LPD.  If true and false are contiguous subtract the smaller.
@@ -34,13 +35,11 @@ genJumpIf: boolean to: targetBytecodePC
 		^ 0].
 	extA := 0.
 	
-.	self CmpCq: (boolean == objectMemory falseObject
+.	self CmpCq: (boolean = objectMemory falseObject
 					ifTrue: [objectMemory trueObject - objectMemory falseObject]
 					ifFalse: [objectMemory falseObject - objectMemory trueObject])
 		R: TempReg.
 	ok := self JumpZero: 0.
-	self CallRT: (boolean == objectMemory falseObject
-					ifTrue: [ceSendMustBeBooleanAddFalseTrampoline]
-					ifFalse: [ceSendMustBeBooleanAddTrueTrampoline]).
+	self genCallMustBeBooleanFor: boolean.
 	ok jmpTarget: (self annotateBytecode: self Label).
 	^0

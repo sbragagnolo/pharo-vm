@@ -21,7 +21,8 @@ activateNewFullClosureMethod: blockClosure numArgs: numArgs mayContextSwitch: ma
 	 the last block method we failed to compile and avoid recompiling it."
 	(self methodWithHeaderShouldBeCogged: methodHeader)
 		ifTrue:
-			[theMethod = lastCoggableInterpretedBlockMethod
+			[(instructionPointer < objectMemory startOfMemory "If from machine code (via value primitive) attempt jitting"
+			  or: [theMethod = lastCoggableInterpretedBlockMethod]) "If from interpreter and repeat block, attempt jitting"
 				ifTrue:
 					[theMethod ~= lastUncoggableInterpretedBlockMethod ifTrue:
 						[cogit cogFullBlockMethod: theMethod numCopied: numCopied.
@@ -75,7 +76,7 @@ activateNewFullClosureMethod: blockClosure numArgs: numArgs mayContextSwitch: ma
 
 	numArgs + numCopied + 1 to: numTemps do: [ :i | self push: objectMemory nilObject].
 
-	instructionPointer := (self initialPCForHeader: methodHeader method: theMethod) - 1.
+	instructionPointer := (self initialIPForHeader: methodHeader method: theMethod) - 1.
 	
 	self setMethod: theMethod.
 

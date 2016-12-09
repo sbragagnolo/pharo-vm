@@ -5,7 +5,6 @@ defaultInternalPlugins
 		BMPReadWriterPlugin 
 		BalloonEnginePlugin 
 		BitBltSimulation 
-		ClipboardExtendedPlugin
 		DSAPlugin 
 		DeflatePlugin 
 		DropPlugin 
@@ -28,4 +27,4 @@ defaultInternalPlugins
 		StarSqueakPlugin 
 		UnixAioPlugin
 		UnixOSProcessPlugin
-		)
+		AsynchFilePlugin)

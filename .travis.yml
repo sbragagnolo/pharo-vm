@@ -1,50 +1,103 @@
 language: c
-os:
-  - linux
-# disable osx for the moment
-#  - osx
-
+sudo: false
+cache:
+  directories:
+    - opensmalltalk-vm/.thirdparty-cache
+git:
+  depth: 5
 addons:
   apt:
     packages:
-      # this are to be able to execute a VM downloaded from the internet during build
-      - lib32asound2
-      - lib32z1
-      - lib32ncurses5
-      - lib32bz2-1.0
-      - gvfs-daemons:i386
-      # this are requirements for building the vm
-      - cmake
-      - zip
-      - bash-completion
-      - git
-      - xz-utils
       - debhelper
       - devscripts
-      - libc6-dev:i386
-      - libasound2:i386
-      - libasound2-dev:i386
-      - libssl-dev:i386
-      - libssl0.9.8:i386
-      - libfreetype6-dev:i386
-      - libx11-dev:i386
-      - libsm-dev:i386
-      - libice-dev:i386
-      - libgl1-mesa-glx:i386
-      - libgl1-mesa-dev:i386
-      - libxext-dev:i386
-      - libglapi-mesa:i386
-      - build-essential
+      - libasound2-dev
+      - libssl-dev
+      - libfreetype6-dev
+      - libx11-dev
+      - libxext-dev
       - gcc-multilib
-      - g++
-
-script: 
-  - scripts/build.sh
-  - scripts/test.sh
-
+      - uuid-dev
+      - zip
+      # next ones are required for compiling libgit2
+      - cmake
+      - libssh2-1-dev
+      - openssh-client
+      - openssh-server
 matrix:
-# Ignore failures with OSX as the build forces to be build for OSX 10.6 and
-# the header files are not installed and we can't install them on OSX. This
-# could be easily fixed with a different CMakeLists.txt
-#  allow_failures:
-#    - os: osx
+  include:
+    - os: osx
+      env: ARCH="macos32x86" FLAVOR="pharo.cog.spur" SRC_ARCH="i386"
+      after_deploy: 
+        - sh ./scripts/deploy-after.sh
+    - os: osx
+      env: ARCH="macos64x64" FLAVOR="pharo.cog.spur" SRC_ARCH="x86_64"
+    - os: linux
+      env: ARCH="linux32x86" FLAVOR="pharo.cog.spur" SRC_ARCH="i386" HEARTBEAT="threaded"
+      addons:
+        apt:
+          packages:
+          - debhelper
+          - devscripts
+          - libc6-dev:i386
+          - libasound2:i386
+          - libasound2-dev:i386
+          - libssl-dev:i386
+          - libssl0.9.8:i386
+          - libfreetype6-dev:i386
+          - libx11-dev:i386
+          - libsm-dev:i386
+          - libice-dev:i386
+          - libgl1-mesa-glx:i386
+          - libgl1-mesa-dev:i386
+          - libxext-dev:i386
+          - libglapi-mesa:i386
+          - gcc-multilib
+          - uuid-dev:i386
+    - os: linux
+      env: ARCH="linux32x86" FLAVOR="pharo.cog.spur" SRC_ARCH="i386" HEARTBEAT="itimer"
+      addons:
+        apt:
+          packages:
+          - debhelper
+          - devscripts
+          - libc6-dev:i386
+          - libasound2:i386
+          - libasound2-dev:i386
+          - libssl-dev:i386
+          - libssl0.9.8:i386
+          - libfreetype6-dev:i386
+          - libx11-dev:i386
+          - libsm-dev:i386
+          - libice-dev:i386
+          - libgl1-mesa-glx:i386
+          - libgl1-mesa-dev:i386
+          - libxext-dev:i386
+          - libglapi-mesa:i386
+          - gcc-multilib
+          - uuid-dev:i386
+    - os: linux
+      env: ARCH="linux64x64" FLAVOR="pharo.cog.spur" SRC_ARCH="x86_64" HEARTBEAT="threaded"
+    - os: linux
+      env: ARCH="linux64x64" FLAVOR="pharo.cog.spur" SRC_ARCH="x86_64" HEARTBEAT="itimer"
+    - os: linux
+      sudo: required
+      env: ARCH="linux32ARMv6" FLAVOR="pharo.cog.spur" SRC_ARCH="i386" CHROOT="schroot -p -c rpi
+        -- bash -c "
+      dist: trusty
+      group: edge
+      install:
+        - (cd opensmalltalk-vm && ./.travis_install.sh)
+script:
+  - (cd scripts && ./build-sources.sh -a $SRC_ARCH)
+  - (cd opensmalltalk-vm && $CHROOT ./.travis_build.sh)
+  - (cd scripts && ./pack-vm.sh -p $ARCH -a $SRC_ARCH)
+before_deploy: 
+  - sh ./scripts/deploy-before.sh
+deploy:
+  provider: bintray
+  file: .bintray.json
+  user: $BINTRAY_USER
+  key: $BINTRAY_API_KEY
+  on:
+    branch: master
+    repo: pharo-project/pharo-vm

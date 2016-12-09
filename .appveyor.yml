@@ -1,0 +1,43 @@
+environment:
+  CYG_MIRROR: http://cygwin.mirror.constant.com
+  FLAVOR: pharo.cog.spur
+  matrix:
+    - platform: x86
+      ARCH: win32x86
+      SRC_ARCH: i386
+      CYG_ROOT: C:\cygwin
+      CYG_SETUP: setup-x86.exe
+      MINGW_ARCH: i686
+#    - platform: x64
+#      ARCH: win64x64
+#      SRC_ARCH: x86_64
+#      CYG_ROOT: C:\cygwin64
+#      CYG_SETUP: setup-x86_64.exe
+#      MINGW_ARCH: x86_64
+matrix:
+  fast_finish: false
+clone_depth: 5
+cache:
+  - .thirdparty-cache
+init:
+  - git config --system core.longpaths true
+  - set PATH=C:\MinGW\bin;C:\MinGW\msys\1.0\bin;%PATH%;%CYG_ROOT%\bin
+install:
+  - git submodule update --init --recursive
+  - ps: 'Start-FileDownload "http://cygwin.com/setup-x86.exe" -FileName "setup-x86.exe"'
+  - ps: 'Start-FileDownload "http://cygwin.com/setup-x86_64.exe" -FileName "setup-x86_64.exe"'
+  - '%CYG_SETUP% -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_ROOT%\var\cache\setup" -P mingw64-%MINGW_ARCH%-gcc-core,mingw64-%MINGW_ARCH%-gcc-g++,mingw64-%MINGW_ARCH%-headers,mingw64-%MINGW_ARCH%-runtime,zip,mingw64-%MINGW_ARCH%-clang'
+build_script:
+  - bash -e -c "cd scripts; ./build-sources.sh -a i386"
+  - bash -e -c "cd opensmalltalk-vm; export THIRDPARTYCACHEDIR=../../../.thirdparty-cache; ./.travis_build.sh"
+  - bash -e -c "cd scripts; ./pack-vm.sh"
+#test_script:
+#  - bash -c "cd scripts; exec 0</dev/null; exec ./run-tests.sh"
+on_failure:
+  - bash -c "if [ -e ./image/PharoDebug.log ]; then cat ./image/PharoDebug.log; fi"
+  - bash -c "if [ -e ./image/stdout ]; then cat ./image/stdout; fi"
+  - bash -c "if [ -e ./image/stderr ]; then cat ./image/stderr; fi"
+before_deploy:
+  - bash -c "./scripts/deploy-before.sh"
+deploy_script:
+  - bash -c "./scripts/deploy-appveyor.sh"

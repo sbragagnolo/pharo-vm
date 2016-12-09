@@ -10,21 +10,21 @@ expectedClosedPICPrototype: cPIC
 	pc := cPIC asUnsignedInteger + firstCPICCaseOffset.
 	"First jump is unconditional; subsequent ones are conditional"
 	object := backEnd literalBeforeFollowingAddress: pc - backEnd jumpLongByteSize.
-	(self asserta: object = 16r5EAF00D) ifFalse:
+	(self asserta: object = self firstPrototypeMethodOop) ifFalse:
 		[errors := 1].
 
 	entryPoint := backEnd jumpLongTargetBeforeFollowingAddress: pc.
 	(self asserta: entryPoint = (self cPICPrototypeCaseOffset + 16rCA5E10)) ifFalse:
 		[errors := errors + 2].
 
-	1 to: maxCPICCases - 1 do:
+	1 to: MaxCPICCases - 1 do:
 		[:i | | methodObjPC classTagPC |
 		pc := pc + cPICCaseSize.
 
 		"verify information in case is as expected."
 		methodObjPC := pc - backEnd jumpLongConditionalByteSize - backEnd cmpC32RTempByteSize.
 		object := backEnd literalBeforeFollowingAddress: methodObjPC.
-		(self asserta: object = (16rBADA550 + i)) ifFalse:
+		(self asserta: object = (self subsequentPrototypeMethodOop+ i)) ifFalse:
 			[errors := errors bitOr: 4].
 
 		classTagPC := pc - backEnd jumpLongConditionalByteSize.
@@ -44,7 +44,7 @@ expectedClosedPICPrototype: cPIC
 
 		"verify information in case is as expected post update."
 		object := backEnd literalBeforeFollowingAddress: methodObjPC.
-		(self asserta: object = (16rBADA550 + i bitXor: 16rA5A5A5A5)) ifFalse:
+		(self asserta: object = (self subsequentPrototypeMethodOop + i bitXor: 16rA5A5A5A5)) ifFalse:
 			[errors := errors bitOr: 32].
 		classTag := backEnd literal32BeforeFollowingAddress: classTagPC.
 		(self asserta: classTag = (16rBABE1F15 + i bitXor: 16r5A5A5A5A)) ifFalse:
